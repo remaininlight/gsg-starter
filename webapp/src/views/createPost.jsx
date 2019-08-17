@@ -12,9 +12,15 @@ const CREATE_POST = gql`
         post {
           title
         }
+        ok
+        errors{
+          field
+          messages
+        }
       }
     }
 `;
+
 
 class CreatePostModal extends React.Component {
 

@@ -7,3 +7,12 @@ class Post(models.Model):
     body = models.CharField(max_length=10000, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
+
+class Comment(models.Model):
+
+    body = models.CharField(max_length=10000, blank=True)
+    karma = models.IntegerField(default=0)
+    created = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
