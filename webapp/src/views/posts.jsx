@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Card, CardText, CardBody, CardTitle, CardFooter, ListGroup, ListGroupItem } from 'reactstrap';
+import { Button, Card, CardText, CardBody, CardTitle, CardFooter, ListGroup, ListGroupItem, Container, Row, Col } from 'reactstrap';
+
 import { Link, Route } from 'react-router-dom'
 import { graphql } from 'react-apollo';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-//import { GSGCard } from "../components/gsgCard.jsx";
 
 const DELETE_POST = gql`
     mutation delete($id: ID!) {
@@ -18,7 +18,7 @@ const DELETE_POST = gql`
     }
 `;
 
-const POST_SUBSCRIPTION = gql`
+const POSTS_SUBSCRIPTION = gql`
     subscription {
       posts_post {
         id
@@ -56,9 +56,6 @@ class PostsView extends React.Component {
                     <DeletePostButton post={post}/>
                 </h5>
             );
-            //const renderedComments = post.posts_comments.map(comment =>{
-            //    return <div>{comment.body}</div>;
-            //});
             const key = post.id; // + location.key;
             const link = `/post/${post.id}`;
             console.log('link ', link );
@@ -71,24 +68,28 @@ class PostsView extends React.Component {
         });
 
         return (
-            <div>
-                <Card className="bg-light">
-                    <CardBody>
-                        <CardTitle>
-                            <h5>Posts</h5>
-                        </CardTitle>
-                        <ListGroup>{renderedPosts}</ListGroup>
-                        <CardFooter>
-                            <Button tag={Link} to="/post/create" color="primary">
-                                Create
-                            </Button>
-                        </CardFooter>
-                    </CardBody>
-                </Card>
-            </div>
+            <Container>
+                <Row>
+                    <Col xs="12" lg="6">
+                        <Card className="bg-light">
+                            <CardBody>
+                                <CardTitle>
+                                    <h5>Posts</h5>
+                                </CardTitle>
+                                <ListGroup>{renderedPosts}</ListGroup>
+                                <CardFooter>
+                                    <Button tag={Link} to="/post/create" color="primary">
+                                        Create
+                                    </Button>
+                                </CardFooter>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
-const PostsViewGraphQL = graphql(POST_SUBSCRIPTION, {})(PostsView);
+const PostsViewGraphQL = graphql(POSTS_SUBSCRIPTION, {})(PostsView);
 
 export { PostsViewGraphQL as PostsView };

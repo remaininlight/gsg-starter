@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 from get_docker_secret import get_docker_secret
+import requests
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +26,12 @@ SECRET_KEY = '6@y=$%iqih#y*lma!kz^t%6b1ijq&7*ge#2v-u=8a1+(3@76=3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+public_ip = ((requests.get('http://icanhazip.com').content)[:-1]).decode('utf-8')
+print('requests.get(http://icanhazip.com).content', (requests.get('http://icanhazip.com').content)[:-1])
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'localhost'
+    'localhost',
+    public_ip
 ]
 
 # Application definition

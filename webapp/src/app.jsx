@@ -3,9 +3,6 @@ import React from 'react';
 import { ModalContainer, ModalRoute } from 'react-router-modal';
 import {
     Collapse,
-    Container,
-    Row,
-    Col,
     Navbar,
     NavbarToggler,
     NavbarBrand,
@@ -13,6 +10,7 @@ import {
     NavItem,
     NavLink } from 'reactstrap';
 import { BrowserRouter, Link, Route } from 'react-router-dom'
+import { LastLocationProvider } from 'react-router-last-location';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from "apollo-client";
 import { split, ApolloLink } from 'apollo-link';
@@ -23,17 +21,18 @@ import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { PostsView } from './views/posts.jsx';
+import { PostView } from './views/post.jsx';
 import { CreatePostModal } from "./views/createPost.jsx";
 
-const GRAPHQL_ENDPOINT = `localhost:%d/v1/graphql`;
+const GRAPHQL_ENDPOINT = `%s:%d/v1/graphql`;
 
 const httpLink = new HttpLink({
-    uri: 'http://' + util.format(GRAPHQL_ENDPOINT, 8000) // "http://<your-app>/v1/graphql", // use https for secure endpoint
+    uri: 'http://' + util.format(GRAPHQL_ENDPOINT, window.location.hostname, 8000) // "http://<your-app>/v1/graphql", // use https for secure endpoint
 });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-    uri: 'ws://' + util.format(GRAPHQL_ENDPOINT, 8080), //"ws://<your-app>/v1/graphql", // use wss for a secure endpoint
+    uri: 'ws://' + util.format(GRAPHQL_ENDPOINT, window.location.hostname, 8080), //"ws://<your-app>/v1/graphql", // use wss for a secure endpoint
     options: {
         reconnect: true
     }
@@ -89,27 +88,22 @@ class App extends React.Component {
 
         return (
             <BrowserRouter>
-                <ApolloProvider client={apolloClient}>
-                    <Navbar color="faded" light expand="md">
-                        <NavbarBrand>GSG Starter</NavbarBrand>
-                        <NavbarToggler onClick={this.toggleMenu}/>
-                        <Collapse isOpen={this.state.menuOpen} navbar>
-                            <Nav className="ml-auto" navbar>
-                            </Nav>
-                        </Collapse>
-                    </Navbar>
-                    <div id="modals">
-                    </div>
-                    <Container>
-                        <Row>
-                            <Col xs="12" lg="6">
-                                <PostsView />
-                            </Col>
-                        </Row>
-                    </Container>
-                    <ModalRoute component={CreatePostModal} path='/post/create' className='create-video-modal'/>
-                    <ModalContainer />
-                </ApolloProvider>
+                <LastLocationProvider>
+                    <ApolloProvider client={apolloClient}>
+                        <Navbar color="faded" light expand="md">
+                            <NavbarBrand tag={Link} to='/'>GSG Starter</NavbarBrand>
+                            <NavbarToggler onClick={this.toggleMenu}/>
+                            <Collapse isOpen={this.state.menuOpen} navbar>
+                                <Nav className="ml-auto" navbar>
+                                </Nav>
+                            </Collapse>
+                        </Navbar>
+                        <Route exact key="posts" path="/" component={PostsView} />
+                        <ModalRoute component={CreatePostModal} path='/post/create' className='create-video-modal'/>
+                        <Route key="post" path="/post/:id" component={PostView} />
+                        <ModalContainer />
+                    </ApolloProvider>
+                </LastLocationProvider>
             </BrowserRouter>
         )
     }

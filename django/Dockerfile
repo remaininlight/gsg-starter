@@ -32,10 +32,6 @@ RUN mkdir -p $PROJECT_DIR
 WORKDIR $PROJECT_DIR
 RUN cd $PROJECT_DIR
 ADD ./requirements.txt ./requirements.txt
-#COPY Pipfile Pipfile.lock ./
-#RUN pip install -U pipenv
-#RUN pipenv install --system
-#RUN PIP_USER=1 PIP_IGNORE_INSTALLED=1 pipenv install --skip-lock  --system --deploy
 RUN pip install -r requirements.txt
 
 # Server
