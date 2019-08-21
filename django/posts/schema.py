@@ -3,7 +3,7 @@ from django.core import serializers
 import graphene
 import json
 from graphene_django_extras import DjangoSerializerMutation
-from .serializers import PostSerializer
+from .serializers import PostSerializer, CommentSerializer
 
 # Schemas make Django models accessible over GraphQL
 
@@ -16,7 +16,14 @@ class PostMutation(DjangoSerializerMutation):
             'body'
         )
         # include_fields, exclude_fields, input_field_name and output_field_name
-
+class CommentMutation(DjangoSerializerMutation):
+    class Meta:
+        description = "Create and update comments"
+        serializer_class = CommentSerializer
+        only_fields = (
+            'post',
+            'body'
+        )
 
 class Mutation(graphene.ObjectType):
     post_create = PostMutation.CreateField()
