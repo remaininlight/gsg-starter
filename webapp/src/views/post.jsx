@@ -3,7 +3,7 @@ import { Button, Card, CardText, CardBody, CardTitle, CardFooter, ListGroup, Lis
 import _ from 'lodash'
 import { Link, Route } from 'react-router-dom'
 import { ModalContainer, ModalRoute } from 'react-router-modal';
-import { graphql } from 'react-apollo';
+import { graphql, Subscription } from 'react-apollo';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { CreateCommentModal } from './createComment.jsx'
@@ -20,12 +20,11 @@ const DELETE_POST = gql`
     }
 `;
 
-const POSTS_SUBSCRIPTION = gql`
-    subscription {
-      posts_post {
+const POST_SUBSCRIPTION = gql`
+    subscription post($id: Int!) {
+      posts_post(where: {id: {_eq: $id}}) {
         id
         title
-        body
         posts_comments {
           id
           body
@@ -36,25 +35,11 @@ const POSTS_SUBSCRIPTION = gql`
 
 class PostView extends React.Component {
 
-    render() {
+    renderPost(post) {
 
-        const { data, match } = this.props;
-        const posts = data.posts_post || [];
-        console.log('data.posts_post', data.posts_post, match);
-        let post = _.find(posts, (p) =>{
-            return p.id == match.params.id;
-        });
+        const { match } = this.props;
 
-        if (data.loading)
-            return <div>Loading</div>;
-        else if (!post)
-            return (
-                <div>
-                    Could not find post with id {match.params.id}
-                </div>
-            );
-
-        const renderedComments = post.posts_comments.map( comment =>{
+        const renderedComments = post.posts_comments.map(comment =>{
             const header = (
                 <h5>
                     {comment.body}
@@ -94,7 +79,32 @@ class PostView extends React.Component {
             </Container>
         );
     }
-}
-const PostViewGraphQL = graphql(POSTS_SUBSCRIPTION, {})(PostView);
 
-export { PostViewGraphQL as PostView };
+    render() {
+
+        const { match } = this.props;
+
+        return (
+            <Subscription subscription={POST_SUBSCRIPTION} variables={{id: 21}}>
+                {({ loading, error, data, client}) => {
+
+                    let post = data && data.posts_post && data.posts_post[0];
+                    if (loading) {
+                        return (<div>Loading...</div>);
+                    }
+                    else if (error) {
+                        console.error(error);
+                        return (<div>Error!</div>);
+                    }
+                    else if (!post) {
+                        return <div>Could not find post with id {match.params.id}</div>
+                    }
+                    return this.renderPost(post);
+                }}
+
+            </Subscription>
+        )
+    }
+}
+
+export { PostView };

@@ -48,7 +48,6 @@ class PostsView extends React.Component {
 
         const { data } = this.props;
         const posts = data.posts_post || [];
-        console.log('PostsView render posts ', posts );
         const renderedPosts = posts.map( post =>{
             const header = (
                 <h5>
@@ -58,13 +57,11 @@ class PostsView extends React.Component {
             );
             const key = post.id; // + location.key;
             const link = `/post/${post.id}`;
-            console.log('link ', link );
             return (
                 <ListGroupItem tag={Link} to={link} key={key}>
                     {header}
                 </ListGroupItem>
             );
-            //{renderedComments}
         });
 
         return (
