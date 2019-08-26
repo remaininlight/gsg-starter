@@ -21,6 +21,7 @@
     "bootstrap": "^4.3.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "jest-webpack": "file:dependencies/jest-webpack",
     "lodash": "^4.17.15",
     "mdbreact": "^4.19.0",
     "react": "^16.8.6",
@@ -46,6 +47,6 @@
   "scripts": {
     "start": "npm install && ./node_modules/.bin/webpack",
     "build": "./node_modules/.bin/webpack",
-    "test": "react-scripts test --env=jsdom"
+    "test": "jest-webpack"
   }
 }
