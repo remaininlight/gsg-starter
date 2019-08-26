@@ -85,7 +85,7 @@ class PostView extends React.Component {
         const { match } = this.props;
 
         return (
-            <Subscription subscription={POST_SUBSCRIPTION} variables={{id: 21}}>
+            <Subscription subscription={POST_SUBSCRIPTION} variables={{id: match.params.id}}>
                 {({ loading, error, data, client}) => {
 
                     let post = data && data.posts_post && data.posts_post[0];
