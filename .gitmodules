@@ -1,3 +1,0 @@
-[submodule "dependencies/jest-webpack"]
-	path = dependencies/jest-webpack
-	url = git@github.com:remaininlight/jest-webpack.git

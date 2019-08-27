@@ -101,7 +101,6 @@ class PostView extends React.Component {
                     }
                     return this.renderPost(post);
                 }}
-
             </Subscription>
         )
     }
