@@ -37,15 +37,15 @@ $ python manage.py runserver 0.0.0.0:8000
 Open a shell in the webapp build container:  
 $ docker exec -it webapp /bin/bash  
 
-##Hasura
+### Hasura
 Set up subscriptions and experiment with subscription queries in the Hasura console:
 http://localhost:8080
 
-##GraphQL
+### GraphQL
 To experiment with graphql queries and mutations go to:  
 http://localhost:8000/v1/graphql
 
-###Live Reload
+### Live Reload
 Live Reload is a browser extension which listens to webpack and reloads the webpage when a new build is available
 https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en
 
