@@ -1,5 +1,5 @@
-boto3==1.9.160
-botocore==1.12.160
+#boto3==1.9.160
+#botocore==1.12.160
 certifi==2019.3.9
 chardet==3.0.4
 Django==2.1.0
@@ -17,14 +17,14 @@ six==1.12.0
 sqlparse==0.3.0
 urllib3==1.25.3
 channels
-asgi_redis
-channels_redis
-celery
+#asgi_redis
+#channels_redis
+#celery
 psycopg2
 graphene-django
 graphene-django-extras
 #rest_framework_jwt
-django-channels-graphql-ws
+#django-channels-graphql-ws
 rx==1.6.0
 djangorestframework
 djangorestframework-jwt

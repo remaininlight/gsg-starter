@@ -2,10 +2,23 @@ import django
 from django.core import serializers
 import graphene
 import json
+from graphene_django import DjangoObjectType
 from graphene_django_extras import DjangoSerializerMutation
+from .models import Post
 from .serializers import PostSerializer
 
 # Schemas make Django models accessible over GraphQL
+
+# A query must be defined in order for Graphene introspection to work
+class GraphenePost(DjangoObjectType):
+    class Meta:
+        model = Post
+
+class Query(graphene.ObjectType):
+    posts = graphene.List(GraphenePost)
+
+    def resolve_posts(self, info):
+        return Post.objects.all()
 
 class PostMutation(DjangoSerializerMutation):
     class Meta:
