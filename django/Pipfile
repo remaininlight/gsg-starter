@@ -27,7 +27,7 @@ numpy = "*"
 scipy = "*"
 scikit-image = "*"
 dlib = "*"
-Django = "==2.1.0"
+Django = "==2.2.13"
 face_recognition = "*"
 
 [requires]
